@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A X" android:layout_margin="20dp" android:id="@+id/accx_t" android:layout_weight="0.3" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Y" android:layout_margin="20dp" android:id="@+id/accy_t" android:layout_weight="0.3" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Z" android:layout_margin="20dp" android:id="@+id/accz_t" android:layout_width="fill_parent" android:layout_weight="0.3" android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A X" android:layout_margin="20dp" android:id="@+id/actx_t" android:layout_weight="0.3" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Y" android:layout_margin="20dp" android:id="@+id/acty_t" android:layout_weight="0.3" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Z" android:layout_margin="20dp" android:id="@+id/actz_t" android:layout_width="fill_parent" android:layout_weight="0.3" android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A X" android:layout_margin="20dp" android:id="@+id/distx_t" android:layout_weight="0.3" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Y" android:layout_margin="20dp" android:id="@+id/disty_t" android:layout_weight="0.3" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Z" android:layout_margin="20dp" android:id="@+id/distz_t" android:layout_width="fill_parent" android:layout_weight="0.3" android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView android:textColor="@color/black" android:textSize="20dp" android:text="A Z" android:layout_margin="20dp" android:id="@+id/tot_dist" android:layout_width="fill_parent" android:layout_height="wrap_content"></TextView>
+</LinearLayout>
+
+</LinearLayout>
