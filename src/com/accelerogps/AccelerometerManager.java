@@ -161,8 +161,9 @@ public class AccelerometerManager {
             	if ((Math.abs(lastZ-z) < 0.5))
             		z=lastZ;
             	
-                /*timeDiff = now - lastUpdate;
-                if (timeDiff > 0) {
+                timeDiff = now - lastUpdate;
+                Accelerometer.timeDiff = timeDiff;
+                /*if (timeDiff > 0) {
                     force = Math.abs(x + y + z - lastX - lastY - lastZ) 
                                 / timeDiff;
                     if (force > threshold) {

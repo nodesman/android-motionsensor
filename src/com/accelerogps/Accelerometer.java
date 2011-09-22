@@ -57,11 +57,15 @@ public class Accelerometer extends Activity
         Toast.makeText(this, "Phone shaked : " + force, 1000).show();
     }
  
+    public static float timeDiff;
+    
+    public float x;
+    public float y;
+    public float z;
     /**
      * onAccelerationChanged callback
      */
     public void onAccelerationChanged(float x, float y, float z) {
-    	
     	x = (float) Math.round(x*100)/100;
     	y = (float) Math.round(y*100)/100;
     	z = (float) Math.round(z*100)/100;
@@ -71,6 +75,10 @@ public class Accelerometer extends Activity
         float movementX = (float) (0.5 * x * x);
         float movementY = (float) (0.5 * y * y);
         float movementZ = (float) (0.5 * z * z);
+        movementX += this.velocityX*Accelerometer.timeDiff;
+        movementY += this.velocityY*Accelerometer.timeDiff;
+        movementZ += this.velocityZ*Accelerometer.timeDiff;
+        
         if (x < 0 )
         	movementX *= -1;
         if (y < 0 )
@@ -78,14 +86,21 @@ public class Accelerometer extends Activity
         if (y < 0 )
         	movementZ *= -1;
         
+        this.x += Math.round(movementX*100)/100;
+        this.y += Math.round(movementY*100)/100;
+        this.z += Math.round(movementZ*100)/100;
         
+        ((TextView) findViewById(R.id.distx_t)).setText(String.valueOf(this.x));
+        ((TextView) findViewById(R.id.disty_t)).setText(String.valueOf(this.y));
+        ((TextView) findViewById(R.id.distz_t)).setText(String.valueOf(this.z));
         
+        this.velocityX = this.velocityX + x*Accelerometer.timeDiff;
+    	this.velocityY = this.velocityY + y*Accelerometer.timeDiff;
+    	this.velocityZ = this.velocityZ + z*Accelerometer.timeDiff;
     }
     
     public void onDistanceChanged(float x, float y, float z ) {
-    	   ((TextView) findViewById(R.id.distx_t)).setText(String.valueOf(x));
-           ((TextView) findViewById(R.id.disty_t)).setText(String.valueOf(y));
-           ((TextView) findViewById(R.id.distz_t)).setText(String.valueOf(z));
+    	   
     }
  
 }
