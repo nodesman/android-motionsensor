@@ -53,7 +53,7 @@ public class AccelerometerManager {
                 sensorManager = (SensorManager) Accelerometer.getContext().
                         getSystemService(Context.SENSOR_SERVICE);
                 List<Sensor> sensors = sensorManager.getSensorList(
-                        Sensor.TYPE_ACCELEROMETER);
+                        Sensor.TYPE_LINEAR_ACCELERATION);
                 supported = new Boolean(sensors.size() > 0);
             } else {
                 supported = Boolean.FALSE;
@@ -84,7 +84,7 @@ public class AccelerometerManager {
         sensorManager = (SensorManager) Accelerometer.getContext().
                 getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> sensors = sensorManager.getSensorList(
-                Sensor.TYPE_ACCELEROMETER);
+                Sensor.TYPE_LINEAR_ACCELERATION);
         if (sensors.size() > 0) {
             sensor = sensors.get(0);
             running = sensorManager.registerListener(
@@ -138,10 +138,11 @@ public class AccelerometerManager {
             // on the AccelerometerListener implementation
             // processing time
             now = event.timestamp;
- 
-            x = event.values[0];
-            y = event.values[1];
-            z = event.values[2];
+          
+            	x=event.values[0];
+            	y=event.values[1];
+            	z=event.values[2];
+            
  
             // if not interesting in shake events
             // just remove the whole if then else bloc
@@ -152,7 +153,15 @@ public class AccelerometerManager {
                 lastY = y;
                 lastZ = z;
             } else {
-                timeDiff = now - lastUpdate;
+            	
+            	if ((Math.abs(lastX-x) < 0.5))
+            		x=lastX;
+            	if ((Math.abs(lastY-y) < 0.5))
+            		y=lastY;
+            	if ((Math.abs(lastZ-z) < 0.5))
+            		z=lastZ;
+            	
+                /*timeDiff = now - lastUpdate;
                 if (timeDiff > 0) {
                     force = Math.abs(x + y + z - lastX - lastY - lastZ) 
                                 / timeDiff;
@@ -167,7 +176,7 @@ public class AccelerometerManager {
                     lastY = y;
                     lastZ = z;
                     lastUpdate = now;
-                }
+                }*/
             }
             // trigger change event
             listener.onAccelerationChanged(x, y, z);
