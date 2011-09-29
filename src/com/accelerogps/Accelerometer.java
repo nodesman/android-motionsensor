@@ -1,5 +1,8 @@
 package com.accelerogps;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -17,18 +20,21 @@ import android.widget.Toast;
 public class Accelerometer extends Activity 
         implements AccelerometerListener {
 	
-	float velocityX=0;
-	float velocityY=0;
-	float velocityZ=0;
+	public static float velocityX=0;
+	public static float velocityY=0;
+	public static float velocityZ=0;
  
     private static Context CONTEXT;
  
-    /** Called when the activity is first created. */
+    private Timer t;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         CONTEXT = this;
+        
+        this.t = new Timer();
+        this.t.scheduleAtFixedRate(new UpdateValue(this), 1000, 500);
     }
  
     protected void onResume() {
@@ -36,6 +42,11 @@ public class Accelerometer extends Activity
         if (AccelerometerManager.isSupported()) {
             AccelerometerManager.startListening(this);
         }
+    }
+    
+    public static void updateSections() {
+    	
+    	
     }
  
     protected void onDestroy() {
@@ -49,35 +60,59 @@ public class Accelerometer extends Activity
     public static Context getContext() {
         return CONTEXT;
     }
+    
+    class UpdateValue extends TimerTask {
+    	
+    	Accelerometer pointer;
+    	UpdateValue(Accelerometer pointer) {
+    		this.pointer = pointer; 
+    	}
+        public void run() {
+        	this.pointer.runOnUiThread(new UpdateFieldsTask());     	
+        }
+      }
+    
+    class UpdateFieldsTask implements Runnable {
+
+		@Override
+		public void run() {
+			
+			((TextView) findViewById(R.id.current_velocity_x)).setText(String.valueOf(Accelerometer.velocityX));
+	        ((TextView) findViewById(R.id.current_velocity_y)).setText(String.valueOf(Accelerometer.velocityY));
+	        ((TextView) findViewById(R.id.current_velocity_z)).setText(String.valueOf(Accelerometer.velocityZ));
+	        
+	        ((TextView) findViewById(R.id.distx_t)).setText(String.valueOf(Accelerometer.x));
+	        ((TextView) findViewById(R.id.disty_t)).setText(String.valueOf(Accelerometer.y));
+	        ((TextView) findViewById(R.id.distz_t)).setText(String.valueOf(Accelerometer.z));
+			
+		}
+    	
+    }
  
-    /**
-     * onShake callback
-     */
+
     public void onShake(float force) {
         Toast.makeText(this, "Phone shaked : " + force, 1000).show();
     }
  
     public static float timeDiff;
     
-    public float x;
-    public float y;
-    public float z;
-    /**
-     * onAccelerationChanged callback
-     */
+    public static float x;
+    public static float y;
+    public static float z;
+
     public void onAccelerationChanged(float x, float y, float z) {
-    	x = (float) Math.round(x*100)/100;
-    	y = (float) Math.round(y*100)/100;
-    	z = (float) Math.round(z*100)/100;
+
         ((TextView) findViewById(R.id.x)).setText(String.valueOf(x));
         ((TextView) findViewById(R.id.y)).setText(String.valueOf(y));
-        ((TextView) findViewById(R.id.z)).setText(String.valueOf(z));
-        float movementX = (float) (0.5 * x * x);
-        float movementY = (float) (0.5 * y * y);
-        float movementZ = (float) (0.5 * z * z);
-        movementX += this.velocityX*Accelerometer.timeDiff;
-        movementY += this.velocityY*Accelerometer.timeDiff;
-        movementZ += this.velocityZ*Accelerometer.timeDiff;
+        ((TextView) findViewById(R.id.z)).setText(String.valueOf(z));        
+        
+        float movementX = (float) (0.5 * x * Accelerometer.timeDiff*Accelerometer.timeDiff);
+        float movementY = (float) (0.5 * y * Accelerometer.timeDiff*Accelerometer.timeDiff);
+        float movementZ = (float) (0.5 * z * Accelerometer.timeDiff*Accelerometer.timeDiff);
+        
+        movementX += Accelerometer.velocityX*Accelerometer.timeDiff;
+        movementY += Accelerometer.velocityY*Accelerometer.timeDiff;
+        movementZ += Accelerometer.velocityZ*Accelerometer.timeDiff;
         
         if (x < 0 )
         	movementX *= -1;
@@ -86,17 +121,19 @@ public class Accelerometer extends Activity
         if (y < 0 )
         	movementZ *= -1;
         
-        this.x += Math.round(movementX*100)/100;
-        this.y += Math.round(movementY*100)/100;
-        this.z += Math.round(movementZ*100)/100;
+        this.x += movementX;
+        this.y += movementY;
+        this.z += movementZ;        
         
-        ((TextView) findViewById(R.id.distx_t)).setText(String.valueOf(this.x));
-        ((TextView) findViewById(R.id.disty_t)).setText(String.valueOf(this.y));
-        ((TextView) findViewById(R.id.distz_t)).setText(String.valueOf(this.z));
         
-        this.velocityX = this.velocityX + x*Accelerometer.timeDiff;
-    	this.velocityY = this.velocityY + y*Accelerometer.timeDiff;
-    	this.velocityZ = this.velocityZ + z*Accelerometer.timeDiff;
+        Accelerometer.velocityX = (Accelerometer.velocityX + x*Accelerometer.timeDiff);
+    	Accelerometer.velocityY = (Accelerometer.velocityY + y*Accelerometer.timeDiff);
+    	Accelerometer.velocityZ = (Accelerometer.velocityZ + z*Accelerometer.timeDiff);
+    	
+
+        //((TextView) findViewById(R.id.current_velocity_x)).setText(String.valueOf(this.velocityX));
+        //((TextView) findViewById(R.id.current_velocity_y)).setText(String.valueOf(this.velocityY));
+        //((TextView) findViewById(R.id.current_velocity_z)).setText(String.valueOf(this.velocityZ));
     }
     
     public void onDistanceChanged(float x, float y, float z ) {
